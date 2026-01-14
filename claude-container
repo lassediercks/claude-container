@@ -5,7 +5,19 @@
 
 VERSION="0.0.1"
 IMAGE_NAME="claude-container:latest"
-CONTAINER_NAME="claude-container-$(date +%s)"
+
+# Get current directory
+CURRENT_DIR="$(pwd)"
+
+# Extract and sanitize folder name for Docker container naming
+FOLDER_NAME=$(basename "$CURRENT_DIR" | sed 's/[^a-zA-Z0-9._-]/-/g' | sed 's/^[^a-zA-Z0-9]*//' | cut -c1-40)
+# Fallback if empty after sanitization
+[ -z "$FOLDER_NAME" ] && FOLDER_NAME="workspace"
+
+# Generate random suffix
+NAMES=(curie meitner franklin lovelace hopper wu noether hodgkin goodall carson parks goldman davis luxemburg truth tubman kollontai steinem hooks lorde butler friedan huerta addams rankin zetkin pankhurst walker wells dunbar angelou garvey baker hamer nash shabazz morrison toni ride jemison rubin yalow elion mcclintock keller chavez mankiller)
+RANDOM_NAME=${NAMES[$RANDOM % ${#NAMES[@]}]}
+CONTAINER_NAME="claude-container-${FOLDER_NAME}-${RANDOM_NAME}"
 
 # Handle version command
 if [ "$1" = "version" ] || [ "$1" = "--version" ] || [ "$1" = "-v" ]; then
@@ -27,9 +39,6 @@ if ! docker image inspect "$IMAGE_NAME" > /dev/null 2>&1; then
     exit 1
 fi
 
-# Get current directory
-CURRENT_DIR="$(pwd)"
-
 # Check if ~/.claude.json exists and mount it read-write
 CLAUDE_JSON_MOUNT=""
 if [ -f "$HOME/.claude.json" ]; then
@@ -44,16 +53,16 @@ cleanup() {
 # Set trap for cleanup on exit
 trap cleanup EXIT INT TERM
 
-# Run the container with current directory mounted
+# Run the container with current directory mounted to /$FOLDER_NAME
 docker run -it --rm \
     --init \
     --name "$CONTAINER_NAME" \
-    -v "$CURRENT_DIR:/workspace" \
+    -v "$CURRENT_DIR:/$FOLDER_NAME" \
     $CLAUDE_JSON_MOUNT \
-    -w /workspace \
+    -w "/$FOLDER_NAME" \
     -e TERM="xterm-256color" \
     -e COLORTERM="truecolor" \
     "$IMAGE_NAME" \
-    bash
+    claude
 
 exit $?
