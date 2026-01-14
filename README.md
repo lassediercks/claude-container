@@ -4,7 +4,7 @@
 
 ## Why?
 
-Run Claude Code in a consistent, isolated Docker environment without worrying about local dependencies or conflicts. Perfect for trying out Claude Code, working across different projects, or maintaining a clean development environment.
+Becase you shouldn't trust an AI agent with your entire system just to run some code generation tasks!
 
 ## Features
 
