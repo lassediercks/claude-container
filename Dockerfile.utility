@@ -1,0 +1,24 @@
+FROM node:20-alpine
+
+# Install basic utilities
+RUN apk add --no-cache \
+    bash \
+    curl \
+    vim \
+    ca-certificates
+
+# Install pnpm globally
+RUN npm install -g pnpm
+
+# Install Claude Code via npm
+RUN npm install -g @anthropic-ai/claude-code
+
+# Set environment variables for better terminal support
+ENV TERM=xterm-256color
+ENV COLORTERM=truecolor
+
+# Set working directory
+WORKDIR /workspace
+
+# Keep container running with shell access
+CMD ["/bin/bash"]
