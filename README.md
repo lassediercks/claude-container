@@ -2,6 +2,8 @@
 
 > A portable, containerized environment for running [Claude Code](https://github.com/anthropics/claude-code) from anywhere on your system
 
+<video src="intro.mov" autoplay loop muted playsinline></video>
+
 ## Why?
 
 Becase you shouldn't trust an AI agent with your entire system just to run some code generation tasks!
@@ -100,23 +102,9 @@ This launches a Docker container with:
 
 - Your current directory mounted at `/workspace`
 - Your `~/.claude.json` configuration loaded
-- Claude Code CLI ready to use
+- Claude Code CLI automatically started
 
-### Inside the Container
-
-```bash
-# Start Claude Code
-claude
-
-# Use pre-installed tools
-pnpm install
-node --version
-
-# Exit when done
-exit
-```
-
-The container is automatically removed on exit.
+Claude Code will start immediately, allowing you to interact with the AI agent. When you're done, exit Claude Code and the container will be automatically removed.
 
 ## Customization
 
