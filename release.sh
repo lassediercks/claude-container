@@ -63,7 +63,9 @@ print_info "Creating release v$VERSION"
 
 # Update version in claude-container script
 print_info "Updating version in claude-container..."
-sed -i "s/^VERSION=\".*\"/VERSION=\"$VERSION\"/" claude-container
+# Use .bak extension for cross-platform compatibility (macOS requires it)
+sed -i.bak "s/^VERSION=\".*\"/VERSION=\"$VERSION\"/" claude-container
+rm claude-container.bak
 
 # Show the change
 print_info "Version updated:"
