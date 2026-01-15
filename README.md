@@ -6,7 +6,7 @@
 
 ## Why?
 
-Becase you shouldn't trust an AI agent with your entire system just to run some code generation tasks!
+Because it just feels better with protection.
 
 ## Features
 
